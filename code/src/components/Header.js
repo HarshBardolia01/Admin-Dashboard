@@ -1,5 +1,11 @@
+import React from "react";
+
 const Header = () => {
-    return <h1>Hello</h1>
-}
+    return (
+        <div className="header-bar">
+            <h1>Admin Dashboard</h1>
+        </div>
+    );
+};
 
 export default Header;
