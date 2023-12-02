@@ -1,11 +1,79 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .header-bar {
-  background-color: #1c4e80;
-  color: rgb(255, 255, 255);
-  padding: 5px 20px;
-  display: flex;
-  justify-content: space-between;
+    background-color: #1c4e80;
+    color: rgb(255, 255, 255);
+    padding: 5px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-page {
+    position: relative;
+    overflow-x: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    @media (min-width: 640px) {
+        border-radius: 12px;
+    }
+}
+
+.dashboard-table {
+    overflow-x: auto;
+}
+
+table {
+    padding: 0.5rem;
+    border: 1px solid;
+    margin: 0 auto;
+    text-align: center; 
+    color: #6b7280;
+    display: table; 
+    width: 98%;
+}
+
+thead {
+    color: black;
+    text-transform: capitalize;
+    background-color: #f9fafb;
+    line-height: 16px;
+}
+
+.global-checkbox .row-checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.global-checkbox-input, .row-checkbox-input {
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    color: #3b82f6;
+    transition: ease-in-out;
+    transition-duration: 150ms;
+}
+
+.table-header-id {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    width: 8.333333%;
+}
+
+.table-header-name .table-header-email .table-header-actions {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    width: 25%;
+}
+
+.table-header-role {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    width: 8.333333%;
 }
