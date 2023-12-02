@@ -85,14 +85,27 @@ const TableRow = ({ isEdit, empInfo, handleRowSelect, handleEditButton, handleSa
                     />
                 </div>
             </td>
+
             <td className="table-row-data" >{empObj.name}</td>
+
             <td className="table-row-data" >{empObj.email}</td>
+
             <td className="table-row-data" >{empObj.role}</td>
+
             <td className="table-row-data-actions" >
-                <div className="edit-button-div" onClick={() => handleEditButton(empObj.id)}>
+                <div
+                    title="Edit Row"
+                    className="edit-button-div"
+                    onClick={() => handleEditButton(empObj.id)}
+                >
                     <FontAwesomeIcon className="edit-button" icon={faEdit} />
                 </div>
-                <div className="delete-button-div" onClick={() => handleRowDeleteButton(empObj.id)}>
+
+                <div
+                    title="Delete Row"
+                    className="delete-button-div"
+                    onClick={() => handleRowDeleteButton(empObj.id)}
+                >
                     <FontAwesomeIcon className="delete-button" icon={faTrash} />
                 </div>
             </td>

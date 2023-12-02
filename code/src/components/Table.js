@@ -168,13 +168,18 @@ const Table = ({ tableData }) => {
                         onKeyDown={(event) => handleSearchChange(event)}
                     />
 
-                    <div className="search-button" onClick={handleSearchButton}>
+                    <div
+                        title="Search Query"
+                        className="search-button"
+                        onClick={handleSearchButton}
+                    >
                         <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
                     </div>
 
                     {
                         query.length ? (
                             <div
+                                title="Clear Search Query"
                                 className="clear-button"
                                 onClick={(event) => {
                                     setQuery("");
@@ -187,7 +192,11 @@ const Table = ({ tableData }) => {
                     }
                 </div>
 
-                <div className="delete-selected" onClick={handleDeleteSelected}>
+                <div
+                    title="Deleted selected rows"
+                    className="delete-selected"
+                    onClick={handleDeleteSelected}
+                >
                     <FontAwesomeIcon className="delete-button-top" icon={faTrash} />
                 </div>
             </div>
@@ -247,6 +256,7 @@ const Table = ({ tableData }) => {
                     </p>
 
                     <button
+                        title="First Page"
                         disabled={currentPage === 0}
                         className="pagination-buttons"
                         onClick={(event) => setCurrentPage(0)}
@@ -255,6 +265,7 @@ const Table = ({ tableData }) => {
                     </button>
 
                     <button
+                        title="Previous Page"
                         disabled={currentPage === 0}
                         className="pagination-buttons"
                         onClick={(event) => setCurrentPage(Math.max(currentPage - 1, 0))}
@@ -276,6 +287,7 @@ const Table = ({ tableData }) => {
 
                                 return (
                                     <button
+                                        title={`Page number ${index + 1}`}
                                         key={index}
                                         style={highlight}
                                         className="pagination-icon"
@@ -290,6 +302,7 @@ const Table = ({ tableData }) => {
                     </div>
 
                     <button
+                        title="Next Page"
                         disabled={currentPage === totalPages - 1}
                         className="pagination-buttons"
                         onClick={(event) => setCurrentPage(Math.min(currentPage + 1, totalPages - 1))}
@@ -298,6 +311,7 @@ const Table = ({ tableData }) => {
                     </button>
 
                     <button
+                        title="Last Page"
                         disabled={currentPage === totalPages - 1}
                         className="pagination-buttons"
                         onClick={(event) => setCurrentPage(totalPages - 1)}
