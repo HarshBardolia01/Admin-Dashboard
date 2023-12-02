@@ -70,7 +70,10 @@ const TableRow = ({ isEdit, empInfo, handleRowSelect, handleEditButton, handleSa
     }
 
     return (
-        <tr key={empObj.id} className={classNameSelect}>
+        <tr
+            key={empObj.id}
+            className={classNameSelect}
+        >
             <td>
                 <div className="row-checkbox">
                     <input

@@ -2,7 +2,15 @@ import React from "react";
 import TableRow from "./TableRow";
 import '../App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faMagnifyingGlass, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {
+    faTrash,
+    faMagnifyingGlass,
+    faTimes,
+    faAnglesLeft,
+    faAngleLeft,
+    faAnglesRight,
+    faAngleRight
+} from '@fortawesome/free-solid-svg-icons';
 
 const Table = ({ tableData }) => {
     const [data, setData] = React.useState([]);
@@ -13,15 +21,20 @@ const Table = ({ tableData }) => {
     const [currentPage, setCurrentPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [totalPages, setTotalPages] = React.useState(0);
-    const [indexOfFirstRow, setIndexOfFirstRow] = React.useState(-1);
-    const [indexOfLastRow, setIndexOfLastRow] = React.useState(-1);
     const [query, setQuery] = React.useState("");
+    const [selectedCount, setSelectedCount] = React.useState(0);
 
     const handleGlobalSelect = (event) => {
-        const newData = currentTableData.map((item) => {
+        const newData = data.map((item, index) => {
+            if (currentPage * rowsPerPage <= index && index < (currentPage + 1) * rowsPerPage) {
+                return {
+                    ...item,
+                    isSelected: event.target.checked
+                };
+            }
+
             return {
-                ...item,
-                isSelected: event.target.checked
+                ...item
             };
         });
 
@@ -85,9 +98,7 @@ const Table = ({ tableData }) => {
     };
 
     const handleSearchButton = () => {
-        if (!query || query.length === 0) {
-            setData(tableData);
-        }
+        if (!query || query.length === 0) return;
 
         const filteredData = tableData.filter((item) => {
             return (
@@ -112,6 +123,7 @@ const Table = ({ tableData }) => {
         });
 
         setData(updatedData);
+        setGlobalCheckBox(false);
     };
 
     React.useEffect(() => {
@@ -124,13 +136,24 @@ const Table = ({ tableData }) => {
 
         setData(dataInfo);
         setTotalPages(Math.ceil(data.length / rowsPerPage));
-        setIndexOfFirstRow(currentPage * rowsPerPage);
-        setIndexOfLastRow(indexOfFirstRow + rowsPerPage);
     }, [tableData]);
 
     React.useEffect(() => {
-        setCurrentTableData(data.slice(indexOfFirstRow, indexOfLastRow));
-    }, [data, indexOfFirstRow, indexOfLastRow]);
+        const startingIndex = currentPage * rowsPerPage;
+        const endingIndex = startingIndex + rowsPerPage;
+        const dataToShow = data.slice(startingIndex, endingIndex);
+        let count = 0;
+
+        dataToShow.map((item) => {
+            if (item.isSelected) {
+                count++;
+            }
+        });
+
+        setTotalPages(Math.ceil(data.length / rowsPerPage));
+        setSelectedCount(count);
+        setCurrentTableData(dataToShow);
+    }, [data, currentPage]);
 
     return (
         <div className="dashboard-page">
@@ -209,18 +232,82 @@ const Table = ({ tableData }) => {
                             })
                         }
                     </tbody>
-
-                    {/* <tfoot>
-                        <tr>
-                            <td>TODO</td>
-                        </tr>
-                    </tfoot> */}
                 </table>
             </div>
 
-            <h1>Hello</h1>
+            <div className="table-footer">
+                <div className="selected-text">
+                    {selectedCount} out of {data.length} selected
+                </div>
 
-        </div>
+                <div className="pagination">
+
+                    <p style={{ "marginRight": "0.75rem" }}>
+                        Page {currentPage + 1} of {totalPages}
+                    </p>
+
+                    <button
+                        disabled={currentPage === 0}
+                        className="pagination-buttons"
+                        onClick={(event) => setCurrentPage(0)}
+                    >
+                        <FontAwesomeIcon className="pagination-icon" icon={faAnglesLeft} />
+                    </button>
+
+                    <button
+                        disabled={currentPage === 0}
+                        className="pagination-buttons"
+                        onClick={(event) => setCurrentPage(Math.max(currentPage - 1, 0))}
+                    >
+                        <FontAwesomeIcon className="pagination-icon" icon={faAngleLeft} />
+                    </button>
+
+                    <div className="pagination-page-buttons">
+
+                        {
+                            Array.from({ length: totalPages }).map((element, index) => {
+                                let highlight = {};
+                                if (index === currentPage) {
+                                    highlight = {
+                                        "backgroundColor": "rgb(51, 51, 230)",
+                                        "color": "white"
+                                    }
+                                };
+
+                                return (
+                                    <button
+                                        key={index}
+                                        style={highlight}
+                                        className="pagination-icon"
+                                        onClick={(event) => setCurrentPage(index)}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                );
+                            })
+                        }
+
+                    </div>
+
+                    <button
+                        disabled={currentPage === totalPages - 1}
+                        className="pagination-buttons"
+                        onClick={(event) => setCurrentPage(Math.min(currentPage + 1, totalPages - 1))}
+                    >
+                        <FontAwesomeIcon className="pagination-icon" icon={faAngleRight} />
+                    </button>
+
+                    <button
+                        disabled={currentPage === totalPages - 1}
+                        className="pagination-buttons"
+                        onClick={(event) => setCurrentPage(totalPages - 1)}
+                    >
+                        <FontAwesomeIcon className="pagination-icon" icon={faAnglesRight} />
+                    </button>
+                </div>
+
+            </div>
+        </div >
     );
 };
 

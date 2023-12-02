@@ -13,10 +13,6 @@
 .dashboard-page {
     position: relative;
     overflow-x: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    @media (min-width: 640px) {
-        border-radius: 12px;
-    }
 }
 
 .dashboard-table {
@@ -25,23 +21,22 @@
 
 table {
     padding: 0.5rem;
-    border: 1px solid;
+    border: 0.2px solid rgb(240, 240, 240);
     margin: 0 auto;
     text-align: center; 
-    color: #6b7280;
     display: table; 
     width: 98%;
+    border-collapse: collapse;
 }
 
 thead {
-    color: black;
     text-transform: capitalize;
-    background-color: #f9fafb;
+    background-color: #ececec;
     line-height: 16px;
 }
 
 tr {
-    border-bottom: 5px solid black;
+    border-bottom: 0.2px solid rgb(240, 240, 240)
 }
 
 .global-checkbox, .row-checkbox {
@@ -61,26 +56,19 @@ tr {
     transition-duration: 150ms;
 }
 
-.table-header-id {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    text-align: center;
-    width: 8.333333%;
-}
-
 .table-header-name, .table-header-email, .table-header-actions {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
     width: 25%;
 }
 
 .table-header-role {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
     width: 8.333333%;
 }
 
@@ -96,16 +84,16 @@ tr {
 .table-row-data {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     font-weight: 500;
 }
 
 .table-row-data-actions {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -145,7 +133,7 @@ tr {
     color: #6b7280;
 }
 
-.top-bar {
+.top-bar, .table-footer {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     font-weight: 500;
@@ -185,25 +173,49 @@ tr {
     justify-content: center;
     border-radius: 0.375rem;
     background-color: #f5365b;
-    padding: 0.75rem 1.5rem;
+    padding: 15px;
     font-weight: 600;
     color: #fff;
     box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.25);
     cursor: pointer;
 }
 
-.search-icon, .clear-icon {
+.search-icon, .clear-icon, .pagination-icon {
     display: inline-flex;
     width: 100%;
     justify-content: center;
     border-radius: 0.375rem;
-    padding: 0.75rem 1.5rem;
+    padding: 14px;
     font-weight: 600;
     box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    border: none;
+    background: transparent;
 }
 
-.search-icon:hover, .clear-icon:hover {
+.search-icon:hover, .clear-icon:hover, .pagination-icon:hover {
     background-color: rgb(51, 51, 230);
     color: white;
+}
+
+.selected-text, .pagination, .pagination-page-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.pagination-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+}
+
+.pagination-page-buttons {
+    gap: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
