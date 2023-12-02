@@ -1,5 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
+import '../App.css';
 
 const Table = ({ tableData }) => {
     const [data, setData] = React.useState([]);
@@ -7,7 +8,7 @@ const Table = ({ tableData }) => {
     const [currentTableData, setCurrentTableData] = React.useState([]);
     const [globalCheckBox, setGlobalCheckBox] = React.useState(false);
 
-    const [currentPage, setCurrentPage] = React.useState(1);
+    const [currentPage, setCurrentPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const [totalPages, setTotalPages] = React.useState(0);
@@ -24,13 +25,9 @@ const Table = ({ tableData }) => {
 
         setData(dataInfo);
         setTotalPages(Math.ceil(data.length / rowsPerPage));
-        setIndexOfFirstRow((currentPage - 1) * rowsPerPage);
+        setIndexOfFirstRow(currentPage * rowsPerPage);
         setIndexOfLastRow(indexOfFirstRow + rowsPerPage);
     }, [tableData]);
-
-    React.useEffect(() => {
-        setCurrentTableData(data.slice(indexOfFirstRow, indexOfLastRow));
-    }, [indexOfFirstRow, indexOfLastRow]);
 
     const handleGlobalSelect = (event) => {
         const newData = currentTableData.map((item) => {
@@ -41,7 +38,7 @@ const Table = ({ tableData }) => {
         });
 
         setGlobalCheckBox(!globalCheckBox);
-        setCurrentTableData(newData);
+        setData(newData);
     };
 
     const handleRowSelect = (event) => {
@@ -67,8 +64,12 @@ const Table = ({ tableData }) => {
             setGlobalCheckBox(false);
         }
 
-        setCurrentTableData(newData);
+        setData(newData);
     };
+
+    React.useEffect(() => {
+        setCurrentTableData(data.slice(indexOfFirstRow, indexOfLastRow));
+    }, [data, indexOfFirstRow, indexOfLastRow]);
 
     return (
         <div className="dashboard-page">
@@ -109,6 +110,12 @@ const Table = ({ tableData }) => {
                             })
                         }
                     </tbody>
+
+                    {/* <tfoot>
+                        <tr>
+                            <td>TODO</td>
+                        </tr>
+                    </tfoot> */}
                 </table>
             </div>
 
