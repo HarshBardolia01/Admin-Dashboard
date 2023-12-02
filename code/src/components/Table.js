@@ -14,15 +14,14 @@ import {
 
 const Table = ({ tableData }) => {
     const [data, setData] = React.useState([]);
-
     const [currentTableData, setCurrentTableData] = React.useState([]);
     const [globalCheckBox, setGlobalCheckBox] = React.useState(false);
     const [editIsOn, setEditIsOn] = React.useState(-1);
     const [currentPage, setCurrentPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [totalPages, setTotalPages] = React.useState(0);
     const [query, setQuery] = React.useState("");
     const [selectedCount, setSelectedCount] = React.useState(0);
+    const rowsPerPage = 10;
 
     const handleGlobalSelect = (event) => {
         const newData = data.map((item, index) => {
@@ -56,6 +55,7 @@ const Table = ({ tableData }) => {
                 if (item.isSelected) {
                     count++;
                 }
+                return item;
             });
 
             if (count === rowsPerPage) {
@@ -135,7 +135,7 @@ const Table = ({ tableData }) => {
         });
 
         setData(dataInfo);
-        setTotalPages(Math.ceil(data.length / rowsPerPage));
+        setTotalPages(Math.ceil(tableData.length / rowsPerPage));
     }, [tableData]);
 
     React.useEffect(() => {
@@ -148,6 +148,7 @@ const Table = ({ tableData }) => {
             if (item.isSelected) {
                 count++;
             }
+            return item;
         });
 
         setTotalPages(Math.ceil(data.length / rowsPerPage));
