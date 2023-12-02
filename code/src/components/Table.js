@@ -1,33 +1,21 @@
 import React from "react";
 import TableRow from "./TableRow";
 import '../App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faMagnifyingGlass, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const Table = ({ tableData }) => {
     const [data, setData] = React.useState([]);
 
     const [currentTableData, setCurrentTableData] = React.useState([]);
     const [globalCheckBox, setGlobalCheckBox] = React.useState(false);
-
+    const [editIsOn, setEditIsOn] = React.useState(-1);
     const [currentPage, setCurrentPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
     const [totalPages, setTotalPages] = React.useState(0);
     const [indexOfFirstRow, setIndexOfFirstRow] = React.useState(-1);
     const [indexOfLastRow, setIndexOfLastRow] = React.useState(-1);
-
-    React.useEffect(() => {
-        const dataInfo = tableData.map((item) => {
-            return {
-                ...item,
-                isSelected: false
-            };
-        });
-
-        setData(dataInfo);
-        setTotalPages(Math.ceil(data.length / rowsPerPage));
-        setIndexOfFirstRow(currentPage * rowsPerPage);
-        setIndexOfLastRow(indexOfFirstRow + rowsPerPage);
-    }, [tableData]);
+    const [query, setQuery] = React.useState("");
 
     const handleGlobalSelect = (event) => {
         const newData = currentTableData.map((item) => {
@@ -42,7 +30,7 @@ const Table = ({ tableData }) => {
     };
 
     const handleRowSelect = (event) => {
-        const newData = currentTableData.map((item) => {
+        const newData = data.map((item) => {
             return {
                 ...item,
                 isSelected: (event.target.id === item.id ? event.target.checked : item.isSelected)
@@ -67,13 +55,119 @@ const Table = ({ tableData }) => {
         setData(newData);
     };
 
+    const handleEditButton = (empId) => {
+        setEditIsOn(empId);
+    };
+
+    const handleCrossButton = () => {
+        setEditIsOn(-1);
+    };
+
+    const handleSaveButton = (empId, empObj) => {
+        const newData = data.map((item) => {
+            if (empId === item.id) {
+                return empObj;
+            } else {
+                return item;
+            }
+        });
+
+        setData(newData);
+        setEditIsOn(-1);
+    };
+
+    const handleRowDeleteButton = (empId) => {
+        const newData = data.filter((item) => {
+            return (item.id !== empId);
+        });
+
+        setData(newData);
+    };
+
+    const handleSearchButton = () => {
+        if (!query || query.length === 0) {
+            setData(tableData);
+        }
+
+        const filteredData = tableData.filter((item) => {
+            return (
+                item.name.toLowerCase().includes(query.toLocaleLowerCase()) ||
+                item.email.toLowerCase().includes(query.toLocaleLowerCase()) ||
+                item.role.toLowerCase().includes(query.toLocaleLowerCase())
+            );
+        });
+
+        setData(filteredData);
+    };
+
+    const handleSearchChange = (event) => {
+        if (event.key === "Enter") {
+            handleSearchButton();
+        }
+    };
+
+    const handleDeleteSelected = () => {
+        const updatedData = data.filter((item) => {
+            return (!item.isSelected);
+        });
+
+        setData(updatedData);
+    };
+
+    React.useEffect(() => {
+        const dataInfo = tableData.map((item) => {
+            return {
+                ...item,
+                isSelected: false
+            };
+        });
+
+        setData(dataInfo);
+        setTotalPages(Math.ceil(data.length / rowsPerPage));
+        setIndexOfFirstRow(currentPage * rowsPerPage);
+        setIndexOfLastRow(indexOfFirstRow + rowsPerPage);
+    }, [tableData]);
+
     React.useEffect(() => {
         setCurrentTableData(data.slice(indexOfFirstRow, indexOfLastRow));
     }, [data, indexOfFirstRow, indexOfLastRow]);
 
     return (
         <div className="dashboard-page">
-            <h1>Working Here in Table</h1>
+            <div className="top-bar">
+                <div className="search">
+                    <input
+                        className="search-input"
+                        type="text"
+                        placeholder="Search"
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                        onKeyDown={(event) => handleSearchChange(event)}
+                    />
+
+                    <div className="search-button" onClick={handleSearchButton}>
+                        <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
+                    </div>
+
+                    {
+                        query.length ? (
+                            <div
+                                className="clear-button"
+                                onClick={(event) => {
+                                    setQuery("");
+                                    setData(tableData);
+                                }}
+                            >
+                                <FontAwesomeIcon className="clear-icon" icon={faTimes} />
+                            </div>
+                        ) : <></>
+                    }
+                </div>
+
+                <div className="delete-selected" onClick={handleDeleteSelected}>
+                    <FontAwesomeIcon className="delete-button-top" icon={faTrash} />
+                </div>
+            </div>
 
             <div className="dashboard-table">
                 <table>
@@ -102,9 +196,14 @@ const Table = ({ tableData }) => {
                             currentTableData.map((empInfo,) => {
                                 return (
                                     <TableRow
+                                        isEdit={editIsOn === empInfo.id ? true : false}
                                         key={empInfo.id}
                                         empInfo={empInfo}
                                         handleRowSelect={handleRowSelect}
+                                        handleEditButton={handleEditButton}
+                                        handleSaveButton={handleSaveButton}
+                                        handleCrossButton={handleCrossButton}
+                                        handleRowDeleteButton={handleRowDeleteButton}
                                     />
                                 );
                             })
@@ -118,6 +217,8 @@ const Table = ({ tableData }) => {
                     </tfoot> */}
                 </table>
             </div>
+
+            <h1>Hello</h1>
 
         </div>
     );
